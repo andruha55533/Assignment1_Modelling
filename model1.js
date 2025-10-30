@@ -19,22 +19,15 @@ class Node {
 }
 
 function swapPairs(head) {
-    let dummy = new Node(0);
-    dummy.next = head;
-    let current = dummy;
+if (head === null || head.next === null) return head;
 
-    while (current.next && current.next.next) {
-        let first = current.next;
-        let second = current.next.next;
+  let newHead = head.next;
+  head.next = swapPairs(newHead.next);
+  newHead.next = head;
 
-        first.next = second.next;
-        second.next = first;
-        current.next = second;
-
-        current = current.next.next;
-    }
-
-    return dummy.next;
+  return newHead;
+}
+return dummy.next;
 }
 
 // Тест
@@ -46,13 +39,9 @@ linked_list.next.next.next.next = new Node(5);
 linked_list.next.next.next.next.next = new Node(6);
 linked_list.next.next.next.next.next.next = new Node(7);
 
-const print = (root) => {
-    let res = [];
-    while(root) {
-        res.push(root.val);
-        root = root.next;
-    }
-    return res;
+const print = (head) => {
+  if (!head) return [];
+  return [head.val, ...print(head.next)];
 };
 
 console.log("Before:", print(linked_list));
@@ -62,14 +51,9 @@ console.log("After:", print(linked_list));
 // 3. Fibonacci
 
 function fibon (n) {
-    if (n < 2) return n;
-    let a = 0, b = 1;
-    for ( let i = 2; i <= n; i++) {
-        let temp = a + b;
-        a = b;
-        b = temp;
-    }
-    return b;
+  if (n === 0) return 0;
+  if (n === 1) return 1;
+  return fib(n - 1) + fib(n - 2);
 }
 
 // Result output
@@ -83,14 +67,10 @@ console.log("===============");
 // 4. Stairs climbing
 
 function climbStairs(n) {
-  if (n <= 2) return n;
-  let a = 1, b = 2;
-  for (let i = 3; i <= n; i++) {
-    let temp = a + b;
-    a = b;
-    b = temp;
-  }
-  return b;
+  if (n === 1) return 1;
+  if (n === 2) return 2;
+
+  return climbStairs(n - 1) + climbStairs(n - 2);
 }
 
 // Result output
@@ -103,18 +83,15 @@ console.log(climbStairs(4)); // 5
 function Powerfunc (x, n) {
       if (n === 0) return 1;
       if(n < 0) {
-        x = 1 / x;
-        n = -n;
+        return 1 / myPow(x, -n)
       }
 
-      let res = 1;
-      while(n > 0) {
-        if(n % 2 === 1) res *= x;
-        x *= x;
-        n = Math.floor(n / 2);
-      }
+       if (n % 2 === 0) {
+    let half = myPow(x, n / 2);
+    return half * half;
+  }
 
-      return res;
+  return x * myPow(x, n - 1);
 }
 
 //Result output
@@ -123,4 +100,5 @@ console.log(Powerfunc(15, -5));
 console.log(Powerfunc(25, 0.45));
 console.log(Powerfunc(3, 2));
 console.log(Powerfunc(44, 1));
+
 console.log("===============");
